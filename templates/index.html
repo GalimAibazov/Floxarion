@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная</title>
+</head>
+<body>
+
+    <h1>Видеохостинг</h1>
+    <div>
+        <h2>Регистрация</h2>
+        <form action="/register" method="post">
+            <input type="text" name="username" placeholder="Логин" required>
+            <input type="password" name="password" placeholder="Пароль" required>
+            <button type="submit">Зарегистрироваться</button>
+        </form>
+
+        <h2>Вход</h2>
+        <form action="/login" method="post">
+            <input type="text" name="username" placeholder="Логин" required>
+            <input type="password" name="password" placeholder="Пароль" required>
+            <button type="submit">Войти</button>
+        </form>
+    </div>
+
+    <h2>Список видео</h2>
+    <div class="video-list">
+        {% for video in videos %}
+        <div class="video-box">
+            <a href="{{ url_for('video', video_id=video.id) }}">
+                {{ video.title }}
+                <img src="https://mnlht.com/wp-content/uploads/2017/06/no_image_placeholder.png" alt="{{ video.title }}" class="video-preview" />
+                (Коэффициент прикола: {{ video.likes - video.dislikes }})
+            </a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <a href="/upload">Загрузить видео</a>
+
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    {% endwith %}
+
+
+    <button onclick="toggleTheme()">Сменить тему</button>
+    <script>
+
+        function toggleTheme() {
+            const body = document.body;
+            const elementsToUpdate = document.querySelectorAll('.video-box, a, div, h1, h2, input');
+
+            if (body.classList.contains('light-theme')) {
+                body.classList.remove('light-theme');
+                body.classList.add('dark-theme');
+                // Обновление элементов
+                elementsToUpdate.forEach(el => el.classList.add('dark-theme'));
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.remove('dark-theme');
+                body.classList.add('light-theme');
+                // Обновление элементов
+                elementsToUpdate.forEach(el => el.classList.remove('dark-theme'));
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+
+        function loadTheme() {
+            const theme = localStorage.getItem('theme') || 'light';
+            document.body.classList.remove('light-theme', 'dark-theme');
+            document.body.classList.add(theme + '-theme');
+        }
+
+        window.onload = loadTheme;
+    </script>
+</body>
+</html>

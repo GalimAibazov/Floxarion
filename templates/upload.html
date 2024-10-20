@@ -1,0 +1,19 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Загрузка видео</title>
+</head>
+<body>
+    <h1>Загрузить видео</h1>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input type="text" name="title" placeholder="Название видео" required>
+        <input type="file" name="video_file" accept="video/mp4" required>
+        <button type="submit">Загрузить</button>
+    </form>
+    <a href="/">Назад</a>
+</body>
+</html>

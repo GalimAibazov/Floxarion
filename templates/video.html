@@ -1,0 +1,35 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ video.title }}</title>
+</head>
+<body>
+    <h1>{{ video.title }}</h1>
+
+
+    <video controls>
+        <source src="{{ url_for('upload_video_file', filename=video.id ~ '.mp4') }}" type="video/mp4">
+        Ваш браузер не поддерживает видео.
+    </video>
+
+
+    <p>Лайки: {{ video.likes }}</p>
+    <p>Дизлайки: {{ video.dislikes }}</p>
+    <p>Коэффициент прикола: {{ video.likes - video.dislikes }}</p>
+
+    <form action="/like" method="post">
+        <input type="hidden" name="video_id" value="{{ video.id }}">
+        <button type="submit">Лайк</button>
+    </form>
+
+    <form action="/dislike" method="post">
+        <input type="hidden" name="video_id" value="{{ video.id }}">
+        <button type="submit">Дизлайк</button>
+    </form>
+
+    <a href="/">Назад</a>
+</body>
+</html>
